@@ -6,7 +6,7 @@
 #    By: proton <proton@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/04 17:38:37 by proton            #+#    #+#              #
-#    Updated: 2024/04/05 09:36:29 by proton           ###   ########.fr        #
+#    Updated: 2024/04/08 19:50:22 by proton           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRCS = pipex.c \
 
 OBJECT = $(SRCS:.c=.o)
 
-ALL: $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJECT)
 	$(CC) $(OBJECT) -o $(NAME)
@@ -31,6 +31,6 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean all
+re: clean fclean all
 
 .PHONY: all clean fclean re
