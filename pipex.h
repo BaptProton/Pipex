@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:25 by proton            #+#    #+#             */
-/*   Updated: 2024/04/09 17:08:27 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/10 14:30:15 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@
 
 # define BUFFERSIZE 500
 
-char	*open_input_file(const char *str);
 char	**ft_split(char const *s, char c);
-int		parse_arguments(char *file, char *arg1, char *arg2);
+int		parse_arguments(char *input, char *arg, char *output, char **envp);
 
 #endif
