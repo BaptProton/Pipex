@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/10 16:11:12 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/10 18:24:07 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 {
 	int	fd[2];
 
-	fd[1] = open(input, );
-	pipe(fd[1]);
+	pipe(fd);
 }
 
 int	main(int argc, char **argv, char **envp)
