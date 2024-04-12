@@ -6,7 +6,7 @@
 /*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:25 by proton            #+#    #+#             */
-/*   Updated: 2024/04/10 14:30:15 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/12 16:29:49 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@
 
 char	**ft_split(char const *s, char c);
 int		parse_arguments(char *input, char *arg, char *output, char **envp);
+char	*find_path(char **envp);
 
 #endif
