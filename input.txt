@@ -1,5 +1,1 @@
-salut
-comment
-ca
-va
-monsieur
+bonjour comment allez vous

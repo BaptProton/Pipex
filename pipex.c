@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/12 18:28:39 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/15 16:33:49 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,42 +54,40 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 	int		intxt;
 	int		outxt;
 
+	intxt = open(input, O_RDONLY);
+	if (intxt < 0)
+		return (1);
+	dup2(intxt, STDIN_FILENO);
+	outxt = open(output, O_WRONLY);
+	if (outxt < 0)
+		return (1);
 	if (pipe(fd) == -1)
 		return (1);
+	// dup2(outxt, STDOUT_FILENO);
 	id = fork();
-	if (id == -1)
-		return (1);
-	n_arg = ft_split(arg, ' ');
-	if (!n_arg)
-		return (1);
 	if (id == -1)
 		return (1);
 	if (id == 0)
 	{
 		puts("1");
-		close(fd[1]);
+		close(fd[0]);
+		n_arg = ft_split(arg, ' ');
 		path = find_path(envp);
-		printf("path %s\n", path);
-		if (fd < 0)
-			return (1);
-		intxt = open(input, O_RDONLY);
-		puts("3");
-		dup2(intxt, STDIN_FILENO);
-		puts("4");
+		printf("path is : %s\n", path);
+		dup2(fd[1], STDIN_FILENO);
 		execve(path, n_arg, envp);
-		puts("5");
-		write(1, input, BUFFERSIZE);
 		close(intxt);
-		
+		close(fd[1]);
 	}
 	else
 	{
-		
 		waitpid(id, &status, 0);
+		dup2(outxt, STDOUT_FILENO);
 		puts("2");
-		outxt = open(output, O_RDONLY);
-		dup2(outxt, STDIN_FILENO);
-		
+		printf("salut chef\n");
+		close(fd[1]);
+		dup2(fd[0], STDOUT_FILENO);
+		close(fd[0]);
 	}
 	return (0);
 }
@@ -105,8 +103,6 @@ int	main(int argc, char **argv, char **envp)
 		// {
 			parse_arguments(argv[1], argv[j], argv[argc -1], envp);
 		// 	j++;
-			
 		// }
-
 	}
 }
