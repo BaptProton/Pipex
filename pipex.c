@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/12 16:36:05 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/12 18:28:39 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 	char	**n_arg;
 	char	*path;
 	int		status;
+	int		intxt;
+	int		outxt;
 
 	if (pipe(fd) == -1)
 		return (1);
@@ -65,19 +67,29 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 	if (id == 0)
 	{
 		puts("1");
-		fd[0] = open(input, O_RDONLY);
+		close(fd[1]);
 		path = find_path(envp);
 		printf("path %s\n", path);
 		if (fd < 0)
 			return (1);
-		// execve(path, n_arg, envp);
+		intxt = open(input, O_RDONLY);
+		puts("3");
+		dup2(intxt, STDIN_FILENO);
+		puts("4");
+		execve(path, n_arg, envp);
+		puts("5");
+		write(1, input, BUFFERSIZE);
+		close(intxt);
+		
 	}
 	else
 	{
-		waitpid(id, &status, NULL);
+		
+		waitpid(id, &status, 0);
 		puts("2");
-		close(fd[0]);
-		write(fd[1], output, BUFFERSIZE);
+		outxt = open(output, O_RDONLY);
+		dup2(outxt, STDIN_FILENO);
+		
 	}
 	return (0);
 }
