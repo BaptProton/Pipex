@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/15 16:33:49 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/16 08:59:53 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,45 +48,47 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 {
 	int		fd[2];
 	int		id;
-	char	**n_arg;
-	char	*path;
+	// char	**n_arg;
+	// char	*path;
 	int		status;
 	int		intxt;
 	int		outxt;
+	(void)arg;
+	(void)envp;
 
-	intxt = open(input, O_RDONLY);
+	intxt = open(input, O_RDONLY, 0777);
 	if (intxt < 0)
 		return (1);
 	dup2(intxt, STDIN_FILENO);
 	outxt = open(output, O_WRONLY);
 	if (outxt < 0)
 		return (1);
+	// dup2(outxt, STDOUT_FILENO);
 	if (pipe(fd) == -1)
 		return (1);
-	// dup2(outxt, STDOUT_FILENO);
 	id = fork();
 	if (id == -1)
 		return (1);
 	if (id == 0)
 	{
-		puts("1");
 		close(fd[0]);
-		n_arg = ft_split(arg, ' ');
-		path = find_path(envp);
-		printf("path is : %s\n", path);
+		puts("1");
 		dup2(fd[1], STDIN_FILENO);
-		execve(path, n_arg, envp);
+		// n_arg = ft_split(arg, ' ');
+		// path = find_path(envp);
 		close(intxt);
 		close(fd[1]);
+		// execve(path, n_arg, envp);
 	}
 	else
 	{
 		waitpid(id, &status, 0);
-		dup2(outxt, STDOUT_FILENO);
 		puts("2");
-		printf("salut chef\n");
 		close(fd[1]);
 		dup2(fd[0], STDOUT_FILENO);
+		dup2(outxt, STDOUT_FILENO);
+		puts("3");
+		printf("salut chef\n");
 		close(fd[0]);
 	}
 	return (0);
