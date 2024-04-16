@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/16 08:59:53 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/16 15:44:49 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,18 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 {
 	int		fd[2];
 	int		id;
-	// char	**n_arg;
-	// char	*path;
+	char	**n_arg;
+	char	*path;
 	int		status;
 	int		intxt;
 	int		outxt;
-	(void)arg;
-	(void)envp;
+	int		pid;
+	char	*arg1[3];
 
-	intxt = open(input, O_RDONLY, 0777);
-	if (intxt < 0)
-		return (1);
-	dup2(intxt, STDIN_FILENO);
-	outxt = open(output, O_WRONLY);
-	if (outxt < 0)
-		return (1);
-	// dup2(outxt, STDOUT_FILENO);
+	arg1[0] = "wc";
+	arg1[1] = "-l";
+	arg1[2] = NULL;
+	path = find_path(envp);
 	if (pipe(fd) == -1)
 		return (1);
 	id = fork();
@@ -72,24 +68,41 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 	if (id == 0)
 	{
 		close(fd[0]);
-		puts("1");
-		dup2(fd[1], STDIN_FILENO);
-		// n_arg = ft_split(arg, ' ');
-		// path = find_path(envp);
-		close(intxt);
+		intxt = open(input, O_WRONLY);
+		if (intxt < 0)
+		return (1);
+		dup2(intxt, STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
+		n_arg = ft_split(arg, ' ');
+		printf("arg 1 %s\n", n_arg[0]);
+		printf("arg 2 %s\n", n_arg[1]);
+		execve(path, n_arg, envp);
 		close(fd[1]);
-		// execve(path, n_arg, envp);
+		close(intxt);
+
+	}
+	pid = fork();
+	if (pid == -1)
+		return (1);
+	if (pid == 0)
+	{
+		close(fd[1]);
+		outxt = open(output, O_WRONLY);
+		if (outxt < 0)
+			return (1);
+		dup2(outxt, STDOUT_FILENO);
+		dup2(fd[0], STDIN_FILENO);
+		execve(path, arg1, envp);
+		close(fd[0]);
+		close(outxt);
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		waitpid(id, &status, 0);
-		puts("2");
-		close(fd[1]);
-		dup2(fd[0], STDOUT_FILENO);
-		dup2(outxt, STDOUT_FILENO);
-		puts("3");
-		printf("salut chef\n");
+		waitpid(pid, &status, 0);
 		close(fd[0]);
+		close(fd[1]);
 	}
 	return (0);
 }
