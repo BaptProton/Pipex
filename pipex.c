@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/16 16:32:57 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/17 10:25:53 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,18 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 	int		fd[2];
 	int		id;
 	char	**n_arg;
-	char	*path;
+	// char	*path;
 	int		status;
 	int		intxt;
 	int		outxt;
 	int		pid;
 	char	*arg1[3];
+	int		test;
 
-	arg1[0] = "wc";
+	arg1[0] = "ls";
 	arg1[1] = "-l";
 	arg1[2] = NULL;
-	path = find_path(envp);
+	// path = find_path(envp);
 	if (pipe(fd) == -1)
 		return (1);
 	id = fork();
@@ -68,7 +69,7 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 	if (id == 0)
 	{
 		close(fd[0]);
-		intxt = open(input, O_WRONLY);
+		intxt = open(input, O_RDONLY);
 		if (intxt < 0)
 		return (1);
 		dup2(intxt, STDIN_FILENO);
@@ -76,10 +77,13 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 		n_arg = ft_split(arg, ' ');
 		printf("arg 1 %s\n", n_arg[0]);
 		printf("arg 2 %s\n", n_arg[1]);
-		execve(path, n_arg, envp);
+		// printf("arg %s \n", n_arg[2]);
+		test = execve("/bin/wc", n_arg, envp);
+		printf("test value %d\n", test);
+		if (test == -1)
+			printf("exec 1 not running properly\n");
 		close(fd[1]);
 		close(intxt);
-
 	}
 	pid = fork();
 	if (pid == -1)
@@ -92,10 +96,14 @@ int	parse_arguments(char *input, char *arg, char *output, char **envp)
 			return (1);
 		dup2(outxt, STDOUT_FILENO);
 		dup2(fd[0], STDIN_FILENO);
-		execve(path, arg1, envp);
+		printf("arg1 %s\n", arg1[0]);
+		printf("arg1 %s\n", arg1[1]);
+		test = execve("bin/ls", n_arg, envp);
+		if (test == -1)
+			printf("exec 2 not running properly\n");
 		close(fd[0]);
 		close(outxt);
-		exit(EXIT_SUCCESS);
+		exit(EXIT_FAILURE);
 	}
 	else
 	{

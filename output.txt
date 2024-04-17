@@ -1,0 +1,7 @@
+arg 1 wc
+arg 2 -l
+test value -1
+exec 1 not running properly
+arg1 ls
+arg1 -l
+exec 2 not running properly
