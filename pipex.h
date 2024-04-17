@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:25 by proton            #+#    #+#             */
-/*   Updated: 2024/04/17 10:15:22 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/17 14:48:14 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 
 char	**ft_split(char const *s, char c);
 int		parse_arguments(char *input, char *arg, char *output, char **envp);
-char	*find_path(char **envp);
+char	*find_path(char **envp, char *cmd);
+char	*research_path(char *path, char *cmd);
+char	**ft_split_path(char const *s, char c);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

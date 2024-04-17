@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/09 13:59:26 by bproton           #+#    #+#             */
-/*   Updated: 2024/04/17 14:45:04 by bproton          ###   ########.fr       */
+/*   Created: 2024/04/17 14:12:02 by bproton           #+#    #+#             */
+/*   Updated: 2024/04/17 14:45:03 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static	char	*ft_printwords(const char *s, char c, size_t word)
 	char	*str;
 
 	j = 0;
-	str = (char *)malloc(sizeof(char) * word + 1);
+	str = (char *)malloc(sizeof(char) * word + 2);
 	if (!str)
 		return (NULL);
 	while (*s != '\0')
@@ -47,12 +47,14 @@ static	char	*ft_printwords(const char *s, char c, size_t word)
 		}
 		if (*s - 1 != c && (*s == c || *s == '\0'))
 		{
-			str[j] = '\0';
+			str[j] = '/';
+            str[j + 1] = '\0';
 			return (str);
 		}
 		s++;
 	}
-	str[j] = '\0';
+	str[j] = '/';
+    str[j + 1] = '\0';
 	return (str);
 }
 
@@ -61,6 +63,7 @@ static	char	**ft_wordlength(char **str, const char *s, char c, size_t j)
 	size_t	sep;
 	size_t	word;
 	size_t	i;
+	
 
 	sep = 0;
 	i = 0;
@@ -91,7 +94,7 @@ static	void	ft_free(char **str, size_t j)
 	free(str);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split_path(char const *s, char c)
 {
 	size_t	j;
 	char	**str;
