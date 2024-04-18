@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/18 11:06:12 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/18 16:06:47 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ char	*research_path(char *path, char *cmd)
 	while (cmd_path[++j])
 	{
 		temp = ft_strjoin(cmd_path[j], cmd);
-		// printf("%s\n", temp);
 		if (access(temp, F_OK | X_OK) == 0)
 			return (temp);
 		free(temp);
@@ -48,15 +47,11 @@ char	*find_path(char **envp, char *cmd)
 		i = 0;
 		if (envp[j][i] == 'P')
 		{
-			// printf("find path 1\n");
 			while (envp[j][i] == path[i])
 				i++;
 			i--;
 			if (envp[j][i] == '=')
-			{
-				// printf("find path 2 \n");
 				return (research_path(envp[j], cmd));
-			}
 		}
 	}
 	return (NULL);
@@ -138,16 +133,22 @@ char	*find_path(char **envp, char *cmd)
 int make_cmd(char *arg, char **envp)
 {
 	char	*path;
+	char	**n_arg;
 
+	n_arg = ft_split(arg, ' ');
 	path = find_path(envp, arg);
-	
+	if (!path)
+		exit(127);
+	if (execve(path, n_arg, envp) == -1)
+		exit(127);
+	return (0);
 }
 
-int	parse_arguments(char *input, char *arg, char **envp)
+int	parse_arguments(char *arg, char **envp)
 {
 	int	fd[2];
 	int	pid;
-	int	rd;
+	int	status;
 
 	if (pipe(fd) == -1)
 		return (1);
@@ -156,31 +157,44 @@ int	parse_arguments(char *input, char *arg, char **envp)
 		return (1);
 	else if (pid == 0)
 	{
-		close(fd[0]);
-		rd = open(input, O_RDONLY);
-		if (rd < 0)
-			return (print_errors("open fail\n"));
-		dup2(rd, STDIN_FILENO);
-		dup2(fd[1], STDOUT_FILENO);
-		if (!(make_cmd(arg, envp)))
+		child_process(fd);
+		if (make_cmd(arg, envp))
 			exit(127);
-		
-		
+		puts("2");
+		exit(EXIT_SUCCESS);
 	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		close(fd[1]);
+		parent_process(fd, pid);
+		return (status);
+	}
+	
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	int	j;
+	int	fd;
+	int	outfile;
 
 	j = 2;
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+		return (print_errors("open failed\n"));
+	dup2(fd, STDIN_FILENO);
 	if (argc > 4)
 	{
-		// while (argc != argc - 1)
-		// {
-			parse_arguments(argv[1], argv[j], envp);
-		// 	j++;
-		// }
+		while (j != argc - 2)
+		{
+			if (!(parse_arguments(argv[j], envp)))
+				return (print_errors("parse_error\n"));
+			j++;
+		}
+		outfile = open(argv[argc], O_WRONLY);
+		if (outfile < 0)
+			return (print_errors("open outfile error\n"));
+		exec_last_cmd()
 	}
-	printf("end of programm\n");
 }

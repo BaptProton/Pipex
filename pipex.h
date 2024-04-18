@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:25 by proton            #+#    #+#             */
-/*   Updated: 2024/04/18 11:02:01 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/18 16:01:22 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <string.h>
 
 # define BUFFERSIZE 500
+# define WRITE 0
+# define READ 1
+# define PARENT 1
 
 char	**ft_split(char const *s, char c);
 // int		parse_arguments(char *input, char *arg, char *output, char **envp);
@@ -29,7 +32,10 @@ char	*find_path(char **envp, char *cmd);
 char	*research_path(char *path, char *cmd);
 char	**ft_split_path(char const *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
-int	    parse_arguments(char *input, char *arg, char **envp);
-int     make_cmd(char *arg, char **envp);
+int		parse_arguments(char *arg, char **envp);
+int		make_cmd(char *arg, char **envp);
+int 	print_errors(char *str);
+int		child_process(int *fd);
+int		parent_process(int *fd, int pid);
 
 #endif

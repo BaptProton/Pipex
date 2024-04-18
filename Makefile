@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: proton <proton@student.42.fr>              +#+  +:+       +#+         #
+#    By: bproton <bproton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/04 17:38:37 by proton            #+#    #+#              #
-#    Updated: 2024/04/17 17:46:21 by proton           ###   ########.fr        #
+#    Updated: 2024/04/18 14:37:22 by bproton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
-SRCS = pipex.c ft_split.c ft_split_path.c \
+SRCS = pipex.c ft_split.c ft_split_path.c pipex_utils.c pipex_utils2.c \
 
 OBJECT = $(SRCS:.c=.o)
 
