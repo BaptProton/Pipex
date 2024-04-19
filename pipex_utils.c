@@ -3,25 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:57:22 by proton            #+#    #+#             */
-/*   Updated: 2024/04/18 18:00:06 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/19 15:02:42 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int print_errors(char *str)
+int	print_errors(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
-	{
-		// if (str[i] < '0' || str[i] > '9')
 		write(2, &str[i], 1);
-	}
 	return (0);
 }
 
@@ -30,7 +27,7 @@ static int	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 		i++;
 	return (i);
 }

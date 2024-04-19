@@ -3,28 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:49:56 by bproton           #+#    #+#             */
-/*   Updated: 2024/04/19 09:05:33 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/19 15:03:22 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	child_process(int *fd)
+int	parent_process(int *fd)
 {
-	puts("child");
-	close(fd[0]);
-	dup2(fd[1], STDOUT_FILENO);
-	return (0);
-}
-int	parent_process(int *fd, int pid)
-{
-	(void)pid;
-
-	puts("parent");
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 	return (0);
+}
+
+char	*research_path(char *path, char *cmd)
+{
+	int		j;
+	char	**cmd_path;
+	char	*temp;
+
+	cmd_path = ft_split_path(path + 5, ':');
+	j = -1;
+	while (cmd_path[++j])
+	{
+		temp = ft_strjoin(cmd_path[j], cmd);
+		if (access(temp, F_OK | X_OK) == 0)
+			return (temp);
+		free(temp);
+	}
+	j = -1;
+	while (cmd_path[++j])
+		free(cmd_path[j]);
+	free(cmd_path);
+	return (NULL);
 }

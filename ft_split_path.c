@@ -6,7 +6,7 @@
 /*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:12:02 by bproton           #+#    #+#             */
-/*   Updated: 2024/04/17 14:45:03 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/19 14:55:17 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,10 @@ static	size_t	ft_wordcount(const char *s, char c)
 	return (wcnt);
 }
 
-static	char	*ft_printwords(const char *s, char c, size_t word)
+static	char	*ft_printwords(const char *s, char c, size_t word, size_t j)
 {
-	size_t	j;
 	char	*str;
 
-	j = 0;
 	str = (char *)malloc(sizeof(char) * word + 2);
 	if (!str)
 		return (NULL);
@@ -48,13 +46,13 @@ static	char	*ft_printwords(const char *s, char c, size_t word)
 		if (*s - 1 != c && (*s == c || *s == '\0'))
 		{
 			str[j] = '/';
-            str[j + 1] = '\0';
+			str[j + 1] = '\0';
 			return (str);
 		}
 		s++;
 	}
 	str[j] = '/';
-    str[j + 1] = '\0';
+	str[j + 1] = '\0';
 	return (str);
 }
 
@@ -63,10 +61,11 @@ static	char	**ft_wordlength(char **str, const char *s, char c, size_t j)
 	size_t	sep;
 	size_t	word;
 	size_t	i;
-	
+	size_t	n;
 
 	sep = 0;
 	i = 0;
+	n = 0;
 	while (i < j)
 	{
 		word = 0;
@@ -74,7 +73,7 @@ static	char	**ft_wordlength(char **str, const char *s, char c, size_t j)
 			sep++;
 		while (s[sep + word] != c && s[sep + word])
 			word++;
-		str[i] = ft_printwords(s + sep, c, word);
+		str[i] = ft_printwords(s + sep, c, word, n);
 		sep += word;
 		i++;
 	}

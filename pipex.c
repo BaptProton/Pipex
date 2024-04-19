@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/19 10:03:23 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/19 15:28:50 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	*research_path(char *path, char *cmd)
-{
-	int		j;
-	char	**cmd_path;
-	char	*temp;
-
-	cmd_path = ft_split_path(path + 5, ':');
-	j = -1;
-	while (cmd_path[++j])
-	{
-		temp = ft_strjoin(cmd_path[j], cmd);
-		if (access(temp, F_OK | X_OK) == 0)
-			return (temp);
-		free(temp);
-	}
-	j = -1;
-	while (cmd_path[++j])
-		free(cmd_path[j]);
-	free(cmd_path);
-	return (NULL);
-}
 
 char	*find_path(char **envp, char *cmd)
 {
@@ -57,80 +35,7 @@ char	*find_path(char **envp, char *cmd)
 	return (NULL);
 }
 
-// int	parse_arguments(char *input, char *arg, char *output, char **envp)
-// {
-// 	int		fd[2];
-// 	int		id;
-// 	char	**n_arg;
-// 	char	*path;
-// 	int		status;
-// 	int		intxt;
-// 	int		outxt;
-// 	int		pid;
-// 	char	*arg1[3];
-
-// 	arg1[0] = "rev";
-// 	// arg1[1] = "";
-// 	arg1[1] = NULL;
-// 	n_arg = ft_split(arg, ' ');
-// 	// printf("1\n");
-// 	if (pipe(fd) == -1)
-// 		return (1);
-// 	id = fork();
-// 	if (id == -1)
-// 		return (1);
-// 	if (id == 0)
-// 	{
-// 		close(fd[0]);
-// 		intxt = open(input, O_RDONLY);
-// 		if (intxt < 0)
-// 		return (1);
-// 		// puts("2");
-// 		dup2(intxt, STDIN_FILENO);
-// 		dup2(fd[1], STDOUT_FILENO);
-// 		path = find_path(envp, n_arg[0]);
-// 		if (!path)
-// 			exit(127);
-// 		if (execve(path, n_arg, envp) == -1)
-// 			exit(EXIT_FAILURE);
-// 		close(fd[1]);
-// 		close(intxt);
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	pid = fork();
-// 	if (pid == -1)
-// 		return (1);
-// 	if (pid == 0)
-// 	{
-// 		close(fd[1]);
-// 		waitpid(id, &status, 0);
-// 		outxt = open(output, O_WRONLY);
-// 		if (outxt < 0)
-// 			return (1);
-// 		// puts("3");
-// 		dup2(fd[0], STDIN_FILENO);
-// 		dup2(outxt, STDOUT_FILENO);
-// 		path = find_path(envp, arg1[0]);
-// 		if (!path)
-// 			exit(127);
-// 		if (execve(path, arg1, envp) == -1)
-// 			exit(EXIT_FAILURE);
-// 		close(fd[0]);
-// 		close(outxt);
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	else
-// 	{
-// 		// waitpid(id, &status, 0);
-// 		waitpid(pid, &status, 0);
-// 		close(fd[0]);
-// 		close(fd[1]);
-// 		exit(EXIT_SUCCESS);
-// 	}
-// 	return (0);
-// }
-
-int make_cmd(char *arg, char **envp)
+int	make_cmd(char *arg, char **envp)
 {
 	char	*path;
 	char	**n_arg;
@@ -138,17 +43,9 @@ int make_cmd(char *arg, char **envp)
 	n_arg = ft_split(arg, ' ');
 	path = find_path(envp, n_arg[0]);
 	if (!path)
-	{
-		puts("invalid path make cmd");
 		exit(127);
-	}
-	printf("%s\n", path);
 	if (execve(path, n_arg, envp) == -1)
-	{
-		puts("execve prob");
 		exit(127);
-	}
-	puts("before return");
 	return (0);
 }
 
@@ -163,29 +60,18 @@ int	parse_arguments(char *arg, char **envp)
 	pid = fork();
 	if (pid == -1)
 		return (1);
-	printf("%d\n", pid);
 	if (pid == 0)
 	{
 		close(fd[0]);
-		// child_process(fd);
-		puts("child 1");
-		
-		// dup2(fd[1], STDOUT_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
 		make_cmd(arg, envp);
-		// {
-		// 	puts("make_cmd return");
-		// 	exit(127);
-		// }
-		puts("2");
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		puts("parent before close");
 		close(fd[1]);
-		parent_process(fd, pid);
-		printf("test");
+		parent_process(fd);
 		return (status);
 	}
 }
@@ -203,7 +89,7 @@ int	exec_last_cmd(int out, char *arg, char **envp)
 	if (execve(path, cmd, envp) == -1)
 		exit(127);
 	close(out);
-	return (0);
+	exit(120);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -213,7 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	int	outfile;
 
 	j = 2;
-	infile = open(argv[1], O_RDONLY);
+	infile = open(argv[1], O_RDONLY, 0777);
 	if (infile < 0)
 		return (print_errors("open failed\n"));
 	dup2(infile, STDIN_FILENO);
@@ -225,10 +111,10 @@ int	main(int argc, char **argv, char **envp)
 				return (print_errors("parse_error\n"));
 			j++;
 		}
-		outfile = open(argv[argc], O_WRONLY);
+		close(infile);
+		outfile = open(argv[argc - 1], O_WRONLY, 0777);
 		if (outfile < 0)
 			return (print_errors("open outfile error\n"));
-		exec_last_cmd(outfile, argv[argc - 1], envp);
-		close(infile);
+		exec_last_cmd(outfile, argv[argc - 2], envp);
 	}
 }
