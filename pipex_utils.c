@@ -6,7 +6,7 @@
 /*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:57:22 by proton            #+#    #+#             */
-/*   Updated: 2024/04/18 10:16:20 by proton           ###   ########.fr       */
+/*   Updated: 2024/04/18 18:00:06 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 int print_errors(char *str)
 {
-    int i;
-    int access;
+	int i;
 
-    i = -1;
-    access = 1;
-    while (str[++i])
-    {
-        // if (str[i] < '0' || str[i] > '9')
-        write(2, &str[i], 1);
-    }
-    return (0);
+	i = -1;
+	while (str[++i])
+	{
+		// if (str[i] < '0' || str[i] > '9')
+		write(2, &str[i], 1);
+	}
+	return (0);
 }
 
 static int	ft_strlen(const char *str)

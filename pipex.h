@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:25 by proton            #+#    #+#             */
-/*   Updated: 2024/04/18 16:01:22 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/19 09:05:43 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		parse_arguments(char *arg, char **envp);
 int		make_cmd(char *arg, char **envp);
 int 	print_errors(char *str);
-int		child_process(int *fd);
+int 	child_process(int *fd);
 int		parent_process(int *fd, int pid);
 
 #endif

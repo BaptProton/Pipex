@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/18 16:06:47 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/19 10:03:23 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,11 +136,19 @@ int make_cmd(char *arg, char **envp)
 	char	**n_arg;
 
 	n_arg = ft_split(arg, ' ');
-	path = find_path(envp, arg);
+	path = find_path(envp, n_arg[0]);
 	if (!path)
+	{
+		puts("invalid path make cmd");
 		exit(127);
+	}
+	printf("%s\n", path);
 	if (execve(path, n_arg, envp) == -1)
+	{
+		puts("execve prob");
 		exit(127);
+	}
+	puts("before return");
 	return (0);
 }
 
@@ -155,46 +163,72 @@ int	parse_arguments(char *arg, char **envp)
 	pid = fork();
 	if (pid == -1)
 		return (1);
-	else if (pid == 0)
+	printf("%d\n", pid);
+	if (pid == 0)
 	{
-		child_process(fd);
-		if (make_cmd(arg, envp))
-			exit(127);
+		close(fd[0]);
+		// child_process(fd);
+		puts("child 1");
+		
+		// dup2(fd[1], STDOUT_FILENO);
+		make_cmd(arg, envp);
+		// {
+		// 	puts("make_cmd return");
+		// 	exit(127);
+		// }
 		puts("2");
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
+		puts("parent before close");
 		close(fd[1]);
 		parent_process(fd, pid);
+		printf("test");
 		return (status);
 	}
-	
+}
+
+int	exec_last_cmd(int out, char *arg, char **envp)
+{
+	char	**cmd;
+	char	*path;
+
+	dup2(out, STDOUT_FILENO);
+	cmd = ft_split(arg, ' ');
+	path = find_path(envp, cmd[0]);
+	if (!path)
+		return (0);
+	if (execve(path, cmd, envp) == -1)
+		exit(127);
+	close(out);
+	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	int	j;
-	int	fd;
+	int	infile;
 	int	outfile;
 
 	j = 2;
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
+	infile = open(argv[1], O_RDONLY);
+	if (infile < 0)
 		return (print_errors("open failed\n"));
-	dup2(fd, STDIN_FILENO);
+	dup2(infile, STDIN_FILENO);
 	if (argc > 4)
 	{
 		while (j != argc - 2)
 		{
-			if (!(parse_arguments(argv[j], envp)))
+			if ((parse_arguments(argv[j], envp)))
 				return (print_errors("parse_error\n"));
 			j++;
 		}
 		outfile = open(argv[argc], O_WRONLY);
 		if (outfile < 0)
 			return (print_errors("open outfile error\n"));
-		exec_last_cmd()
+		exec_last_cmd(outfile, argv[argc - 1], envp);
+		close(infile);
 	}
 }
