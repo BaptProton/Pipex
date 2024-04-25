@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/25 11:24:58 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/25 15:52:56 by bproton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 char	*find_path(char **envp, char *cmd)
 {
@@ -99,7 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	int	outfile;
 
 	j = 2;
-	infile = open(argv[1], O_RDONLY);
+	infile = open(argv[1], O_RDONLY, 0777);
 	if (infile < 0)
 		return (print_errors("open failed\n"));
 	dup2(infile, STDIN_FILENO);
@@ -112,7 +112,7 @@ int	main(int argc, char **argv, char **envp)
 			j++;
 		}
 		close(infile);
-		outfile = open(argv[argc - 1], O_WRONLY);
+		outfile = open(argv[argc - 1], O_WRONLY, 0777);
 		if (outfile < 0)
 			return (print_errors("open outfile error\n"));
 		exec_last_cmd(outfile, argv[argc - 2], envp);
