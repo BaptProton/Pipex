@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 17:38:16 by proton            #+#    #+#             */
-/*   Updated: 2024/04/19 15:28:50 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/25 09:28:55 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	int	outfile;
 
 	j = 2;
-	infile = open(argv[1], O_RDONLY, 0777);
+	infile = open(argv[1], O_RDONLY);
 	if (infile < 0)
 		return (print_errors("open failed\n"));
 	dup2(infile, STDIN_FILENO);
@@ -107,8 +107,8 @@ int	main(int argc, char **argv, char **envp)
 	{
 		while (j != argc - 2)
 		{
-			if ((parse_arguments(argv[j], envp)))
-				return (print_errors("parse_error\n"));
+			if (parse_arguments(argv[j], envp))
+				return (print_errors("a command failed\n"));
 			j++;
 		}
 		close(infile);
