@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:57:22 by proton            #+#    #+#             */
-/*   Updated: 2024/04/19 15:02:42 by bproton          ###   ########.fr       */
+/*   Updated: 2024/04/26 09:58:57 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	print_errors(char *str)
 	i = -1;
 	while (str[++i])
 		write(2, &str[i], 1);
-	return (0);
+	return (1);
 }
 
 static int	ft_strlen(const char *str)
