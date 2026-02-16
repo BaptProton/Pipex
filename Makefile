@@ -6,7 +6,7 @@
 #    By: proton <proton@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/04 17:38:37 by proton            #+#    #+#              #
-#    Updated: 2024/04/26 09:29:15 by proton           ###   ########.fr        #
+#    Updated: 2026/02/16 17:04:26 by proton           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,16 @@ NAME = pipex
 NAME_BONUS = pipex_bonus
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-SRCS =	pipex.c ft_split.c ft_split_path.c pipex_utils.c pipex_utils2.c \
+INCLUDES = -Iheader
+OBJDIR = obj
 
-SRCS_B =	pipex_bonus.c ft_split_bonus.c ft_split_path_bonus.c \
-			pipex_utils_bonus.c pipex_utils2_bonus.c \
+SRCS =	src/pipex.c src/ft_split.c src/ft_split_path.c src/pipex_utils.c src/pipex_utils2.c
 
-OBJECT = $(SRCS:.c=.o)
-OBJ_B = $(SRCS_B:.c=.o)
+SRCS_B =	src/pipex_bonus.c src/ft_split_bonus.c src/ft_split_path_bonus.c \
+			src/pipex_utils_bonus.c src/pipex_utils2_bonus.c
+
+OBJECT = $(patsubst src/%.c,$(OBJDIR)/%.o,$(SRCS))
+OBJ_B = $(patsubst src/%.c,$(OBJDIR)/%.o,$(SRCS_B))
 
 all: $(NAME)
 
@@ -32,11 +35,14 @@ bonus: $(NAME_BONUS)
 $(NAME_BONUS): $(OBJ_B)
 	$(CC) $(OBJ_B) -o $(NAME_BONUS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: src/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(NAME) $(OBJECT) $(OBJ_B)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME) $(NAME_BONUS)
@@ -45,4 +51,4 @@ re: clean fclean all
 
 rebonus: fclean bonus
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re rebonus
