@@ -6,11 +6,11 @@
 /*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:57:22 by proton            #+#    #+#             */
-/*   Updated: 2024/04/26 09:58:57 by proton           ###   ########.fr       */
+/*   Updated: 2026/02/17 11:58:37 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 int	print_errors(char *str)
 {

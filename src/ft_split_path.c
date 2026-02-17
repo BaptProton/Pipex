@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bproton <bproton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:12:02 by bproton           #+#    #+#             */
-/*   Updated: 2024/04/19 14:55:17 by bproton          ###   ########.fr       */
+/*   Updated: 2026/02/17 11:58:14 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 static	size_t	ft_wordcount(const char *s, char c)
 {

@@ -6,7 +6,7 @@
 #    By: proton <proton@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/04 17:38:37 by proton            #+#    #+#              #
-#    Updated: 2026/02/16 17:04:26 by proton           ###   ########.fr        #
+#    Updated: 2026/02/17 11:57:36 by proton           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 NAME_BONUS = pipex_bonus
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -Iheader
+INCLUDES = -Iinclude
 OBJDIR = obj
 
 SRCS =	src/pipex.c src/ft_split.c src/ft_split_path.c src/pipex_utils.c src/pipex_utils2.c

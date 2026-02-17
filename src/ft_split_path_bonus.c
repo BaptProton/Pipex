@@ -6,11 +6,11 @@
 /*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:12:02 by bproton           #+#    #+#             */
-/*   Updated: 2024/04/25 17:43:08 by proton           ###   ########.fr       */
+/*   Updated: 2026/02/17 11:58:08 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../include/pipex_bonus.h"
 
 static	size_t	ft_wordcount(const char *s, char c)
 {

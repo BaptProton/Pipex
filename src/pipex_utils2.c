@@ -6,11 +6,11 @@
 /*   By: proton <proton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:49:56 by bproton           #+#    #+#             */
-/*   Updated: 2024/04/25 17:40:52 by proton           ###   ########.fr       */
+/*   Updated: 2026/02/17 11:58:47 by proton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 int	parent_process(int *fd)
 {
